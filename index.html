@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="violet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GameHub — открой свой следующий игровой мир</title>
+  <meta name="description" content="GameHub — игровой портал: каталог игр, рейтинги, избранное, личная библиотека, сравнение и персональные рекомендации. Работает прямо в браузере.">
+  <meta name="theme-color" content="#090B10">
+  <meta property="og:title" content="GameHub — игровой портал">
+  <meta property="og:description" content="Каталог игр, подборки, избранное и личная игровая библиотека.">
+  <meta property="og:image" content="assets/images/og-cover.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.cloudflare.steamstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/library_hero.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Экран загрузки -->
+  <div id="boot" aria-hidden="true">
+    <div class="boot-inner">
+      <div class="boot-tile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7.5" width="19" height="10" rx="5"/><path d="M7.5 11v3M6 12.5h3"/><circle cx="15.4" cy="11.4" r="1" fill="currentColor" stroke="none"/><circle cx="17.8" cy="13.6" r="1" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="boot-word"><span>Game</span><em>Hub</em></div>
+      <div class="boot-bar"><i></i></div>
+      <p class="boot-note">Загружаем игровые миры…</p>
+    </div>
+  </div>
+
+  <noscript>
+    <div style="position:fixed;inset:0;z-index:999;background:#090B10;color:#F5F5F7;display:grid;place-items:center;font-family:sans-serif;text-align:center;padding:24px">
+      <div><h1 style="margin-bottom:12px">GameHub</h1><p>Для работы портала включите JavaScript в настройках браузера.</p></div>
+    </div>
+  </noscript>
+
+  <!-- Фоновые слои -->
+  <div class="bg" aria-hidden="true">
+    <i class="bg-aurora a"></i><i class="bg-aurora b"></i><i class="bg-aurora c"></i>
+    <i class="bg-grid"></i><i class="bg-grain"></i>
+  </div>
+
+  <!-- Шапка -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#/" class="logo" aria-label="GameHub — на главную">
+        <span class="logo-tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7.5" width="19" height="10" rx="5"/><path d="M7.5 11v3M6 12.5h3"/><circle cx="15.4" cy="11.4" r="1" fill="currentColor" stroke="none"/><circle cx="17.8" cy="13.6" r="1" fill="currentColor" stroke="none"/></svg>
+        </span>
+        <span class="logo-word">Game<em>Hub</em></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a href="#/" data-nav="home">Главная</a>
+        <a href="#/catalog" data-nav="catalog">Каталог игр</a>
+        <a href="#/popular" data-nav="popular">Популярное</a>
+        <a href="#/favorites" data-nav="favorites">Избранное<span class="nav-badge" id="favBadge" hidden></span></a>
+        <a href="#/library" data-nav="library">Моя библиотека<span class="nav-badge" id="libBadge" hidden></span></a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-trigger" data-action="search-open" aria-label="Поиск игр">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+          <span class="search-trigger-text">Поиск игр…</span>
+          <kbd id="kbdHint">Ctrl K</kbd>
+        </button>
+
+        <div class="dd" id="notifDD" data-dd="notifs">
+          <button class="icon-btn" data-action="dd-toggle" aria-label="Уведомления" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5a6 6 0 0 1 12 0c0 4.6 1.8 5.8 1.8 5.8H4.2S6 14.1 6 9.5"/><path d="M10.3 19.5a2 2 0 0 0 3.4 0"/></svg>
+            <span class="dot-badge" id="notifBadge" hidden></span>
+          </button>
+          <div class="dd-menu dd-notifs" id="notifMenu" role="menu"></div>
+        </div>
+
+        <div class="dd" id="profileDD" data-dd="profile">
+          <button class="avatar-btn" data-action="dd-toggle" aria-label="Меню профиля" aria-expanded="false">
+            <img id="headerAvatar" alt="Аватар" width="36" height="36">
+            <svg class="avatar-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="dd-menu dd-profile" id="profileMenu" role="menu"></div>
+        </div>
+
+        <button class="icon-btn burger" id="burger" data-action="mobile-toggle" aria-label="Открыть меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Мобильное меню -->
+  <div id="mobileBackdrop" data-action="mobile-toggle" aria-hidden="true"></div>
+  <div id="mobileMenu" aria-label="Мобильное меню"></div>
+
+  <!-- Контент (рендерится роутером) -->
+  <main id="view" class="view-anim"></main>
+
+  <!-- Подвал -->
+  <footer id="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#/" class="logo">
+          <span class="logo-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7.5" width="19" height="10" rx="5"/><path d="M7.5 11v3M6 12.5h3"/><circle cx="15.4" cy="11.4" r="1" fill="currentColor" stroke="none"/><circle cx="17.8" cy="13.6" r="1" fill="currentColor" stroke="none"/></svg></span>
+          <span class="logo-word">Game<em>Hub</em></span>
+        </a>
+        <p>Игровой портал нового поколения: каталог, подборки, избранное и личная библиотека прогресса. Всё работает прямо в браузере — без установки и регистрации.</p>
+        <div class="socials">
+          <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5A9.5 9.5 0 0 0 9 21c.5.1.7-.2.7-.5v-1.7c-2.7.6-3.3-1.2-3.3-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7-.1-.2-.4-1.2.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.3 4.6-4.5 4.9.3.3.6.9.6 1.8v2.6c0 .3.2.6.7.5A9.5 9.5 0 0 0 12 2.5Z"/></svg></a>
+          <a href="https://discord.com" target="_blank" rel="noopener" aria-label="Discord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M8.5 5.5C10 5 14 5 15.5 5.5c2.5.8 4 5.5 4 9.5-1.5 2-4 2.5-4 2.5l-.8-1.5c1-.4 1.8-1 1.8-1-2.8 1.3-6.2 1.3-9 0 0 0 .8.6 1.8 1l-.8 1.5s-2.5-.5-4-2.5c0-4 1.5-8.7 4-9.5Z"/><circle cx="9.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://t.me" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.6l-3.1 14.7c-.2.9-1.2 1.3-1.9.8l-4.6-3.4-2.4 2.7c-.5.6-1.5.4-1.8-.4l-1.7-5.4-4.5-1.5c-1-.3-1-1.6 0-1.9L20.3 3c1-.4 1.9.5 1.6 1.6Z"/></svg></a>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12.5" rx="4"/><path d="M10.5 9.5v5.5l5-2.75-5-2.75Z" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Разделы</h4>
+        <a href="#/">Главная</a>
+        <a href="#/catalog">Каталог игр</a>
+        <a href="#/popular">Популярное</a>
+        <a href="#/favorites">Избранное</a>
+        <a href="#/library">Моя библиотека</a>
+      </div>
+      <div class="footer-col">
+        <h4>Возможности</h4>
+        <button data-action="random-game">Случайная игра</button>
+        <button data-action="compare-open">Сравнение игр</button>
+        <button data-action="search-open">Быстрый поиск</button>
+        <button data-action="profile-open">Профиль и тема</button>
+      </div>
+      <div class="footer-col footer-about">
+        <h4>О проекте</h4>
+        <p>GameHub — демонстрационный проект на чистых HTML, CSS и JavaScript. Оценки, индексы популярности и подборки приведены для примера и не являются актуальной статистикой. Данные профиля хранятся локально в вашем браузере.</p>
+        <div class="tech-chips"><span>HTML5</span><span>CSS3</span><span>ES6+</span><span>LocalStorage</span></div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="footerYear">2026</span> GameHub. Создано в <span id="footerCreated">2026</span> году.</span>
+      <span class="footer-made">Сделано с <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="width:14px;height:14px;color:#FB7185;vertical-align:-2px"><path d="M12 20.3S4 15.3 4 9.9A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 8 2.9c0 5.4-8 10.4-8 10.4Z"/></svg> для геймеров · v1.0</span>
+    </div>
+  </footer>
+
+  <!-- Панель сравнения -->
+  <div id="compareTray" hidden></div>
+
+  <!-- Наверх -->
+  <button id="toTop" data-action="scroll-top" aria-label="Вернуться наверх">
+    <svg class="ring" viewBox="0 0 40 40" aria-hidden="true">
+      <circle class="ring-bg" cx="20" cy="20" r="17"/>
+      <circle class="ring-fg" id="ringFg" cx="20" cy="20" r="17"/>
+    </svg>
+    <svg class="up-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+  </button>
+
+  <!-- Тосты и модальные окна -->
+  <div id="toasts" aria-live="polite"></div>
+  <div id="modalRoot"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
